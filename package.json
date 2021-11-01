@@ -1,0 +1,25 @@
+{
+  "name": "scriptlings",
+  "version": "1.0.0",
+  "description": "Learn JavaScript and TypeScript with little scriptlings",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/jlyonsmith/scriptlings.git"
+  },
+  "keywords": [
+    "learn",
+    "javascript",
+    "typescript",
+    "ecmascript"
+  ],
+  "author": "John Lyon-Smith",
+  "license": "Unlicense",
+  "bugs": {
+    "url": "https://github.com/jlyonsmith/scriptlings/issues"
+  },
+  "homepage": "https://github.com/jlyonsmith/scriptlings#readme"
+}
