@@ -1,10 +1,19 @@
 {
   "name": "scriptlings",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Learn JavaScript and TypeScript with little scriptlings",
-  "main": "index.js",
+  "main": "src/index.js",
+  "type": "module",
+  "files": [
+    "exercises/**",
+    "src/**"
+  ],
+  "bin": {
+    "scriptlings": "src/scriptlings.js"
+  },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "start": "node src/scriptlings.js"
   },
   "repository": {
     "type": "git",
@@ -21,5 +30,9 @@
   "bugs": {
     "url": "https://github.com/jlyonsmith/scriptlings/issues"
   },
-  "homepage": "https://github.com/jlyonsmith/scriptlings#readme"
+  "homepage": "https://github.com/jlyonsmith/scriptlings#readme",
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "minimist": "^1.2.5"
+  }
 }
