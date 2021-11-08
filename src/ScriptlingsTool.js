@@ -8,24 +8,30 @@ import * as readline from "node:readline/promises"
 import path from "path"
 import chokidar from "chokidar"
 
-// Missing "I AM NOT DONE" is indication of being done
-const reIAmNotDone = /^\s*\/\/\s*I\s+AM\s+NOT\s+DONE/gm
+// Missing "I AM NOT DONE" is indication of being done (?!)
+const reIAmNotDone = new RegExp(/^[ \t]*\/\/ *I +AM +NOT +DONE/, "gm")
 
 export class ScriptlingsTool {
   constructor({ log, toolName }) {
     this.log = log
     this.toolName = toolName ?? "scriptlings"
+    this.exercises = null
   }
 
   getExercises() {
     if (!this.exercises) {
-      this.exercises = JSON5.parse(fs.readFileSync("exercises.json5"))
-      this.exercises.forEach((exercise) => {
-        exercise.isNotDone = () =>
-          reIAmNotDone.test(
+      this.exercises = JSON5.parse(
+        fs.readFileSync("exercises.json5", { encoding: "utf8" })
+      )
+
+      for (const exercise of this.exercises) {
+        exercise.isDone = () => {
+          reIAmNotDone.lastIndex = 0
+          return !reIAmNotDone.test(
             fs.readFileSync(exercise.path, { encoding: "utf8" })
           )
-      })
+        }
+      }
     }
 
     return this.exercises
@@ -40,7 +46,7 @@ export class ScriptlingsTool {
       this.log.info(
         `${exercise.name.padEnd(17)}${exercise.path.padEnd(
           46
-        )}${(exercise.isNotDone() ? "Not Done" : "Done").padEnd(7)}`
+        )}${(exercise.isDone() ? "Done" : "Not Done").padEnd(7)}`
       )
     }
   }
@@ -59,7 +65,7 @@ export class ScriptlingsTool {
     while (!result.done) {
       const exercise = result.value
 
-      if (!exercise.isNotDone()) {
+      if (exercise.isDone()) {
         result = iterator.next()
         continue
       }
@@ -81,6 +87,8 @@ export class ScriptlingsTool {
       } else {
         watcher.add(exercise.path)
       }
+
+      console.clear()
 
       const child = childProcess.spawnSync(
         "node",
