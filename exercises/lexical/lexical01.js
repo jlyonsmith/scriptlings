@@ -2,6 +2,7 @@ import assert from "assert"
 
 /*
 A literal is a data value that appears directly in a program.
+Fix the following code so it works.
  */
 
 // I AM NOT DONE

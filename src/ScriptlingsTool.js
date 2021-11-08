@@ -91,7 +91,7 @@ export class ScriptlingsTool {
         }
       )
 
-      if (!child.error) {
+      if (child.status === 0) {
         console.log(
           "Success! Remove the line containing I A NOT DONE to continue."
         )
@@ -198,8 +198,8 @@ which is better known as JavaScript.
 3. If you're stuck on an exercise, there is a helpful hint you can view by typing
     'hint' (in watch mode), or running 'scriptlings hint myexercise'.
 
-Got all that? Great! To get started, run 'npm start' or 'scriptlings watch' in order
-to get the first incomplete exercise. Make sure to have your editor open!
+Got all that? Great! To get started, run 'npm start -- watch' or 'scriptlings watch'
+in order to get the first incomplete exercise. Make sure to have your editor open!
 
 Command Line:
 

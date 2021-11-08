@@ -2,7 +2,14 @@
   {
     name: "lexical01",
     path: "exercises/lexical/lexical01.js",
-    hint: "There are four kinds of literals in ECMAScript; numbers, strings, booleans and null\
-    Numbers and strings have a few different variations in how they can be declared.",
+    hint: "There are four core kinds of literals in ECMAScript; numbers, strings, booleans and null\
+    Numbers and strings have a few different variations in how they can be declared. undefined and null\
+    are similar but mean different things.",
+  },
+  {
+    name: "function05",
+    path: "exercises/function/function05.js",
+    hint: "You can destructure function arrays and objects, declare default values and gather extra arguments\
+    using a rest parameter.",
   },
 ]
