@@ -1,10 +1,127 @@
 import parseArgs from "minimist"
 import { fullVersion } from "./version.js"
+import JSON5 from "json5"
+import fs from "fs"
+import childProcess from "child_process"
+import process from "process"
+import * as readline from "node:readline/promises"
+import path from "path"
+import chokidar from "chokidar"
+
+// Missing "I AM NOT DONE" is indication of being done
+const reIAmNotDone = /^\s*\/\/\s*I\s+AM\s+NOT\s+DONE/gm
 
 export class ScriptlingsTool {
   constructor({ log, toolName }) {
     this.log = log
     this.toolName = toolName ?? "scriptlings"
+  }
+
+  getExercises() {
+    if (!this.exercises) {
+      this.exercises = JSON5.parse(fs.readFileSync("exercises.json5"))
+      this.exercises.forEach((exercise) => {
+        exercise.isNotDone = () =>
+          reIAmNotDone.test(
+            fs.readFileSync(exercise.path, { encoding: "utf8" })
+          )
+      })
+    }
+
+    return this.exercises
+  }
+
+  async list() {
+    this.log.info(
+      `${"Name".padEnd(17)}${"Path".padEnd(46)}${"Status".padEnd(7)}`
+    )
+
+    for (const exercise of this.getExercises()) {
+      this.log.info(
+        `${exercise.name.padEnd(17)}${exercise.path.padEnd(
+          46
+        )}${(exercise.isNotDone() ? "Not Done" : "Done").padEnd(7)}`
+      )
+    }
+  }
+
+  async watch() {
+    const rli = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    })
+    let ac = new AbortController()
+    const exercises = this.getExercises()
+    let iterator = exercises[Symbol.iterator]()
+    let result = iterator.next()
+    let watcher = null
+
+    while (!result.done) {
+      const exercise = result.value
+
+      if (!exercise.isNotDone()) {
+        result = iterator.next()
+        continue
+      }
+
+      if (this.debug) {
+        console.log(exercise)
+      }
+
+      if (!watcher) {
+        watcher = chokidar
+          .watch(exercise.path, {
+            disableGlobbing: true,
+            cwd: process.cwd(),
+          })
+          .on("change", (path) => {
+            console.log(path)
+            ac.abort()
+          })
+      } else {
+        watcher.add(exercise.path)
+      }
+
+      const child = childProcess.spawnSync(
+        "node",
+        [path.basename(exercise.path)],
+        {
+          cwd: path.dirname(exercise.path),
+          stdio: ["inherit", "ignore", "inherit"],
+        }
+      )
+
+      if (!child.error) {
+        console.log(
+          "Success! Remove the line containing I A NOT DONE to continue."
+        )
+      }
+
+      while (true) {
+        let answer = ""
+        let abort = false
+
+        try {
+          answer = await rli.question("Type 'hint', 'skip' or 'quit'\n", {
+            signal: ac.signal,
+          })
+        } catch {
+          abort = true
+          ac = new AbortController()
+        }
+
+        if (answer === "quit") {
+          return
+        } else if (abort || answer === "skip") {
+          await watcher.unwatch(exercise.path)
+          break
+        } else if (answer === "hint") {
+          console.log(exercise.hint)
+        }
+      }
+    }
+
+    console.log("That's All!")
   }
 
   async run(argv) {

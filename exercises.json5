@@ -1,0 +1,8 @@
+[
+  {
+    name: "lexical01",
+    path: "exercises/lexical/lexical01.js",
+    hint: "There are four kinds of literals in ECMAScript; numbers, strings, booleans and null\
+    Numbers and strings have a few different variations in how they can be declared.",
+  },
+]
