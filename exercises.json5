@@ -7,6 +7,12 @@
     are similar but mean different things.",
   },
   {
+    name: "function01",
+    path: "exercises/function/function01.js",
+    hint: "Remember that ECMAScript is not strongly typed. With arrow syntax, if the function is a single\
+    expression you don't neet the curly braces or a return statement.",
+  },
+  {
     name: "function05",
     path: "exercises/function/function05.js",
     hint: "You can destructure function arrays and objects, declare default values and gather extra arguments\
