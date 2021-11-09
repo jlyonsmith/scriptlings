@@ -1,7 +1,4 @@
 import assert from "assert"
-// TODO: Trailing commas in function syntax
-// TODO: Bind operator
-
 /*
 Destructuring function arguments.
 */
