@@ -13,9 +13,39 @@
     expression you don't neet the curly braces or a return statement.",
   },
   {
+    name: "function02",
+    path: "exercises/function/function02.js",
+    hint: "",
+  },
+  {
+    name: "function03",
+    path: "exercises/function/function03.js",
+    hint: "",
+  },
+  {
+    name: "function04",
+    path: "exercises/function/function04.js",
+    hint: ".",
+  },
+  {
     name: "function05",
     path: "exercises/function/function05.js",
     hint: "You can destructure function arrays and objects, declare default values and gather extra arguments\
     using a rest parameter.",
+  },
+  {
+    name: "function06",
+    path: "exercises/function/function06.js",
+    hint: "",
+  },
+  {
+    name: "function07",
+    path: "exercises/function/function07.js",
+    hint: "",
+  },
+  {
+    name: "function08",
+    path: "exercises/function/function08.js",
+    hint: "",
   },
 ]
